@@ -36,6 +36,16 @@ app.post('/iotsensors' , async(req,res) => {
     }
 })
 
+
+app.get('/datafromsensors',async(req,res) => {
+    try {
+        const datafromiot = await Iot.find({});
+        res.status(200).json(datafromiot);
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+})
+
 mongoose.set("strictQuery",false)
 
 
