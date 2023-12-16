@@ -20,9 +20,31 @@ app.get('/iot', (req,res) => {
 
 
 app.listen(3000, ()=> {
-    console.log("bye")
+    console.log("hello from Spruce Dev")
 })
 
+const sensorDateSchema = new mongoose.Schema({
+    distance: Number,
+    timestamp: { type: Date, default: Date.now }
+});
+
+const SensorData = mongoose.model('SensorData',sensorDateSchema)
+
+
+app.post('/senddata', (req,res) => {
+    const { distance } =req.body;
+    const sensorData = new SensorData( {distance});
+
+
+    sensorData.save()
+    .then(() => {
+        res.status(201).send('data saved ');
+    })
+    .catch(error => {
+        console.error(error);
+        res.status(500).send('Internal servver Error');
+    });
+});
 
 
 app.post('/iotsensors' , async(req,res) => {
